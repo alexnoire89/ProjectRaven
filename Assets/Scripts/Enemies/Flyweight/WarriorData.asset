@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95965d0fe4f1d14b8a88cc6f363ebcf, type: 3}
+  m_Name: WarriorData
+  m_EditorClassIdentifier: 
+  baseHealth: 1
+  deathSound: {fileID: 8300000, guid: 894f272ebb11242af94879907071b1b6, type: 3}
+  patrolTime: 0
+  patrolSpeed: 0
+  rayDistance: 0
+  moveSpeed: 0
+  xFlip: 1
+  enemy_Score: 100
+  lifecoin: {fileID: 2701696136584896183, guid: 307f6bdbfc051914aa55759fe26d45e4, type: 3}
+  player: {fileID: 5007108029172986341, guid: 841ddac14bdccfb4f89b0371ec78aa6a, type: 3}
+  statePatrol: 0
+  stateChase: 0
+  stateIdle: 1

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 45e02dcf29ab3e54f9a1a96bcf2a8dd4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - enemyDeathSFX: {instanceID: 0}
+  - doorHitSFX: {instanceID: 0}
+  - firePrefab: {fileID: 5009791530845354711, guid: 8cf2e851d518c5c4bad9795dc4dc886f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
