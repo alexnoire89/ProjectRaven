@@ -6,24 +6,24 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour, IAudioObserver
 {
-    [SerializeField] public float moveSpeed = 14f;
-    [SerializeField] float enemyMoveX = 100.0f;
-    [SerializeField] float enemyMoveY = 0f;
-    private float fireRate = 0.5f;
+    [Header("Stats")]
+    [SerializeField] private float moveSpeed = 14f;
+    private float enemyMoveX = 40.0f;
+    private float enemyMoveY = 0f;
+    [SerializeField] private float fireRate = 0.5f;
     private float specialShieldRate = 3f;
     private float lastFireTime = 0f;
     private float lastSpecialShieldTime = 0f;
-
-    public float jumpAmount = 7f;
-
+    [SerializeField] private float jumpAmount = 7f;
     private Animator animator;
     PlayerStats playerstats;
     public Rigidbody2D rb;
     bool isGrounded;
     bool right;
-    public float groundCheckDistance = 1.5f;
-    public LayerMask groundLayer;
+    [SerializeField] private float groundCheckDistance = 1.5f;
+    [SerializeField] private LayerMask groundLayer;
 
+    [Header("SFX")]
     [SerializeField] private AudioClip jumpSFX;
     [SerializeField] private AudioClip fireSFX;
     [SerializeField] private AudioClip shieldSFX;
@@ -31,16 +31,27 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     private IShootStrategy normalShootStrategy;
     private IShootStrategy specialShieldStrategy;
 
+    [Header("Scripts")]
     public GameObject shootingController;
     public GameObject shieldController;
 
     //Interactables
     private IInteractable currentInteractable;
 
+    
     //Touch input
     private Vector2 touchStartPos;
     private bool isTouching;
     private float tapStartTime;
+    [Header("TouchMovement")]
+    [SerializeField] private float swipeSensitivity = 2f;
+
+    //Touch Taps
+    [SerializeField] RectTransform fireZone;
+
+    //Joystick Touch
+    [SerializeField] private FloatingJoystick joystick;
+
 
     //Movimiento tactil
     private float moveInputTouch = 0f;
@@ -73,7 +84,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         {
             HandleMovement();
             HandleTouchInput();
-            HandleInteraction();
+            //HandleInteraction();
         }
     }
 
@@ -81,30 +92,19 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
 
-        float moveDirection = moveInputTouch;
+        //Joystick
+        Vector2 joystickInput = joystick.InputDirection;
+        moveInputTouch = joystickInput.x;
 
-        //float moveDirection = 0f;
+        rb.velocity = new Vector2(moveInputTouch * moveSpeed, rb.velocity.y);
 
-        ////En movil usar moveInputTouch
-        //if (Application.isMobilePlatform)
-        //{
-        //    moveDirection = moveInputTouch;
-        //}
-        //else
-        //{
-        //    //En editor o standalone usar teclas
-        //    moveDirection = Input.GetAxisRaw("Horizontal");
-        //}
-
-        rb.velocity = new Vector2(moveDirection * moveSpeed, rb.velocity.y);
-
-        if (moveDirection > 0)
+        if (moveInputTouch > 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
             animator.SetTrigger("startMove");
             right = true;
         }
-        else if (moveDirection < 0)
+        else if (moveInputTouch < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
             animator.SetTrigger("startMove");
@@ -116,15 +116,13 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         }
     }
 
-
     void HandleTouchInput()
     {
-        Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
 
-        //Touch Input
-        if (Input.touchCount > 0)
+        //Manejo de dedos en pantalla
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            Touch touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(i);
             Vector2 touchPos = touch.position;
 
             if (touch.phase == TouchPhase.Began)
@@ -134,24 +132,32 @@ public class PlayerController : MonoBehaviour, IAudioObserver
                 isTouching = true;
             }
 
+            //Swipes del lado derecho de la pantalla
             if (touch.phase == TouchPhase.Moved && isTouching)
             {
-                HandleSwipe(touchPos - touchStartPos, touchStartPos.x > screenCenter.x);
+                HandleSwipe(touchPos - touchStartPos, touchStartPos.x > Screen.width / 2);
             }
 
+            //Taps
             if (touch.phase == TouchPhase.Ended && isTouching)
             {
-                HandleTap(touchStartPos.x > screenCenter.x, Time.time - tapStartTime);
+                float tapDuration = Time.time - tapStartTime;
+
+                HandleTap(touchStartPos, tapDuration);
                 isTouching = false;
             }
         }
 
-        //Mouse Input (simulacion)
-        else if (Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        //PLACEHOLDER SOLO PARA SIMULACION DEL EDITOR DE UNITY
+        if ((Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer) && Input.GetMouseButton(0))
         {
+            Vector2 mousePos = Input.mousePosition;
+
+    
+
             if (Input.GetMouseButtonDown(0))
             {
-                touchStartPos = Input.mousePosition;
+                touchStartPos = mousePos;
                 tapStartTime = Time.time;
                 isTouching = true;
             }
@@ -159,14 +165,17 @@ public class PlayerController : MonoBehaviour, IAudioObserver
             if (Input.GetMouseButton(0) && isTouching)
             {
                 Vector2 swipeDelta = (Vector2)Input.mousePosition - touchStartPos;
-                HandleSwipe(swipeDelta, touchStartPos.x > screenCenter.x);
-
+                HandleSwipe(swipeDelta, touchStartPos.x > Screen.width / 2);
             }
 
             if (Input.GetMouseButtonUp(0) && isTouching)
             {
                 float tapDuration = Time.time - tapStartTime;
-                HandleTap(touchStartPos.x > screenCenter.x, tapDuration);
+
+           
+
+                HandleTap(touchStartPos, tapDuration);
+
                 isTouching = false;
             }
         }
@@ -176,20 +185,18 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     {
         if (!isRightSide) return;
 
-       
-        float sensitivityFactor = 2f;
-        swipeDelta *= sensitivityFactor;
+        swipeDelta *= swipeSensitivity;
 
         if (swipeDelta.magnitude > 50f)
         {
+            //Swipe Salto
             if (swipeDelta.y > 0 && isGrounded)
             {
-                //Salta vertical nomas
                 rb.AddForce(new Vector2(0f, jumpAmount), ForceMode2D.Impulse);
                 OnSoundPlayed(jumpSFX);
-
-
             }
+
+            //Swipe Interacturar
             else if (swipeDelta.y < 0 && currentInteractable != null)
             {
                 currentInteractable.Interact();
@@ -199,10 +206,11 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         }
     }
 
-    void HandleTap(bool isRightSide, float tapDuration)
+    void HandleTap(Vector2 tapPosition, float tapDuration)
     {
-        if (!isRightSide) return;
+        if (!RectTransformUtility.RectangleContainsScreenPoint(fireZone, tapPosition)) return;
 
+        //Tap Escudo
         if (tapDuration < 0.3f)
         {
             if (Time.time - lastFireTime >= fireRate)
@@ -212,6 +220,8 @@ public class PlayerController : MonoBehaviour, IAudioObserver
                 lastFireTime = Time.time;
             }
         }
+
+        //Tap Disparo
         else
         {
             if (Time.time - lastSpecialShieldTime >= specialShieldRate)
@@ -224,23 +234,17 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     }
 
 
-    void HandleInteraction()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
-        {
-            currentInteractable.Interact();
-        }
-    }
+    //void HandleInteraction()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
+    //    {
+    //        currentInteractable.Interact();
+    //    }
+    //}
 
-    public void MoveLeftTouch(bool isPressed)
-    {
-        moveInputTouch = isPressed ? -1f : 0f;
-    }
 
-    public void MoveRightTouch(bool isPressed)
-    {
-        moveInputTouch = isPressed ? 1f : 0f;
-    }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
