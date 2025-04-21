@@ -29,9 +29,15 @@ public class Boss_Skelleton : Enemy, IAudioObserver
     void Start()
     {
         bossHP = data.BaseHealth;
+   
+
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
         animator = GetComponent<Animator>();
         SFX_Driver.Instance.RegisterObserver(this);
-
     }
 
 
@@ -61,7 +67,7 @@ public class Boss_Skelleton : Enemy, IAudioObserver
         }
         else
         {
-            base.OnlyPatrol();
+            base.Patrol();
         }
 
     }

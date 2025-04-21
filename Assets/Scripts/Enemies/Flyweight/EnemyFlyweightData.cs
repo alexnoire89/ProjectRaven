@@ -29,7 +29,7 @@ public class EnemyFlyweightData : ScriptableObject
     public float PatrolTime => patrolTime;
     public float PatrolSpeed => patrolSpeed;
     public float RayDistance => rayDistance;
-    public float MoveSpeed => moveSpeed;
+    public float MoveSpeed => Mathf.Abs(moveSpeed);
     public bool XFlip => xFlip;
     public int Enemy_Score => enemy_Score;
     public GameObject Lifecoin => lifecoin;

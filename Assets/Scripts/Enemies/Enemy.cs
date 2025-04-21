@@ -1,271 +1,202 @@
-
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy : MonoBehaviour, IAudioObserver
 {
-    [Header("Punteros para el rayo de patrulla")]
-	[SerializeField] private Transform castPointLeft;
-	[SerializeField] private Transform castPointRight;
+    [Header("Raycast Origins")]
+    [SerializeField] private Transform castPointLeft;
+    [SerializeField] private Transform castPointRight;
 
-    public static event Action<int> OnScoreChanged;
-	private Rigidbody2D rb;
-    private float currentTime;
-    private bool right = false;
-    private RaycastHit2D ry;
     public EnemyFlyweightData data;
+    public static event Action<int> OnScoreChanged;
+    private SpriteRenderer spriteRenderer;
+    private float currentTime;
+
+    public bool isIdleOnly = false;
+
+    protected Rigidbody2D rb;
+    private bool movingRight = true;
     private int enemyHP;
+    private EnemyState currentState = EnemyState.Patrol;
+
+    private Vector3 playerPosition;
 
 
-    private void Awake()
-	{
-		enemyHP = data.BaseHealth;
+    public enum EnemyState
+    {
+        Patrol,
+        Chase,
+        Idle
+    }
+
+    protected virtual void Awake()
+    {
+        enemyHP = data.BaseHealth;
+        rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
 
     }
 
-	void Start()
-	{
-        rb = GetComponent<Rigidbody2D>();
+    private void Start()
+    {
         SFX_Driver.Instance.RegisterObserver(this);
 
     }
-    void OnDestroy()
+
+    private void Update()
     {
-        SFX_Driver.Instance.RemoveObserver(this);
+        if (enemyHP <= 0)
+        {
+            Die();
+            return;
+        }
+
+        if (isIdleOnly)
+        {
+            currentState = EnemyState.Idle;
+        }
+
+        switch (currentState)
+        {
+            case EnemyState.Patrol:
+                Patrol();
+                break;
+            case EnemyState.Chase:
+                Chase();
+                break;
+            case EnemyState.Idle:
+                Idle();
+                break;
+        }
+
+        if (!isIdleOnly)
+        {
+            if (DetectPlayer())
+            {
+                currentState = EnemyState.Chase;
+            }
+            else if (currentState == EnemyState.Chase)
+            {
+                currentState = EnemyState.Patrol;
+            }
+        }
+    }
+
+    private bool DetectPlayer()
+    {
+        RaycastHit2D hitRight = Physics2D.Raycast(castPointRight.position, Vector2.right, data.RayDistance);
+        RaycastHit2D hitLeft = Physics2D.Raycast(castPointLeft.position, Vector2.left, data.RayDistance);
+
+        Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, hitRight.collider != null && hitRight.collider.CompareTag("Player") ? Color.red : Color.green);
+        Debug.DrawRay(castPointLeft.position, Vector2.left * data.RayDistance, hitLeft.collider != null && hitLeft.collider.CompareTag("Player") ? Color.red : Color.green);
+
+        if (hitRight.collider != null && hitRight.collider.CompareTag("Player"))
+        {
+            playerPosition = hitRight.collider.transform.position;
+            return true;
+        }
+
+        if (hitLeft.collider != null && hitLeft.collider.CompareTag("Player"))
+        {
+            playerPosition = hitLeft.collider.transform.position;
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public void Patrol()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        currentTime += Time.deltaTime;
+
+        if (currentTime > data.PatrolTime)
+        {
+            movingRight = !movingRight;
+            currentTime = 0;
+        }
+
+        float speed = movingRight ? data.PatrolSpeed : -data.PatrolSpeed;
+        rb.velocity = new Vector2(speed, rb.velocity.y);
+
+        spriteRenderer.flipX = movingRight ? data.XFlip : !data.XFlip;
+    }
+
+
+    private void Chase()
+    {
+        if (playerPosition == null) return;
+
+        float direction = playerPosition.x - transform.position.x;
+
+
+
+        if (direction != 0)
+        {
+            rb.velocity = new Vector2(Mathf.Sign(direction) * Mathf.Abs(data.MoveSpeed), rb.velocity.y);
+        }
+
+      
+        spriteRenderer.flipX = direction > 0;
+
+    }
+
+
+
+
+    private void Idle()
+    {
+        rb.velocity = Vector2.zero;
+
+        spriteRenderer.flipX = movingRight;
+    }
+
+
+
+
+
+
+
+
+    private void Die()
+    {
+        Instantiate(data.Lifecoin, transform.position, Quaternion.identity);
         OnScoreChanged?.Invoke(data.Enemy_Score);
+        OnSoundPlayed(data.DeathSound);
         Destroy(gameObject);
-     
     }
 
     public void TakeDamage(int damage)
-	{
+    {
         enemyHP -= damage;
-		
-	}
-
-
-    private void Update()
-	{
-		if (data.StatePatrol)
-		{
-			OnlyPatrol();
-		}
-		else if (data.StateChase)
-        {
-            startPatrol();
-        }
-        else if (data.StateIdle)
-        {
-            idleInPlace();
-        }
-
-
-        if (enemyHP <= 0)
-		{
-            GameObject lc = Instantiate(data.Lifecoin, transform.position, transform.rotation);
-            lc.GetComponent<LifeCoin>();
-            OnDestroy();
-         
-        }
-
     }
-
-
-
-	internal void ChasingPJ()
-	{
-
-
-		if (transform.position.x < data.Player.position.x)
-		{
-			//Si el enemigo esta a la izquierda del PJ, lo movemos a la derecha
-			rb.velocity = new Vector2(data.MoveSpeed, 0);
-			GetComponent<SpriteRenderer>().flipX = !data.XFlip;
-
-
-		}
-		else if (transform.position.x > data.Player.position.x)
-		{
-			//Si el enemigo esta a la izquierda del PJ, lo movemos a la derecha
-			rb.velocity = new Vector2(-data.MoveSpeed, 0);
-			GetComponent<SpriteRenderer>().flipX = data.XFlip;
-
-		}
-		else
-		{
-			//Si el enemigo está directamente encima del PJ, se queda quieto
-			rb.velocity = Vector2.zero;
-		}
-	}
-
-	internal void idleInPlace()
-    {
-		rb.velocity = new Vector2(0, 0);
-	}
-
-	internal void startPatrol()
-    {
-		//Sumador de tiempo
-		currentTime += Time.deltaTime;
-
-		//Si se vence el tiempo de patrulla gira hacia el otro lado
-		if (currentTime > data.PatrolTime)
-		{
-			if (right)
-			{
-
-				right = false;
-             
-            }
-			else
-			{
-				right = true;
-               
-            }
-
-			//Y se resetea el tiempo
-			currentTime = 0;
-            
-        }
-
-		if (right)
-		{
-			//Muevo el enemigo a la derecha y giro el flip
-			transform.Translate(Time.deltaTime * data.PatrolSpeed, 0, 0);
-			GetComponent<SpriteRenderer>().flipX = data.XFlip;
-
-			//Si los rayos a la derecha detectan al PJ, lo persigue
-			ry = Physics2D.Raycast(castPointRight.position, Vector2.right, data.RayDistance);
-			//Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, Color.green);
-
-			if ((ry.collider != null) && (ry.collider.gameObject.CompareTag("Player")))
-            {
-				//Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, Color.red);
-				ChasingPJ();
-                currentTime = 0;
-
-            }
-        }
-		else
-		{
-			transform.Translate(Time.deltaTime * -data.PatrolSpeed, 0, 0);
-			GetComponent<SpriteRenderer>().flipX = !data.XFlip;
-
-			ry = Physics2D.Raycast(castPointLeft.position, Vector2.left, data.RayDistance);
-			//Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, Color.green);
-
-			if ((ry.collider != null) && (ry.collider.gameObject.CompareTag("Player")))
-			{
-				//Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, Color.red);
-                ChasingPJ();
-                currentTime = 0;
-            }
-
-		}
-	}
-
-    internal void OnlyPatrol()
-    {
-        //Sumador de tiempo
-        currentTime += Time.deltaTime;
-
-        //Si se vence el tiempo de patrulla gira hacia el otro lado
-        if (currentTime > data.PatrolTime)
-        {
-            if (right)
-            {
-
-                right = false;
-
-            }
-            else
-            {
-                right = true;
-
-            }
-
-            //Y se resetea el tiempo
-            currentTime = 0;
-
-        }
-
-        if (right)
-        {
-            //Muevo el enemigo a la derecha y giro el flip
-            transform.Translate(Time.deltaTime * data.PatrolSpeed, 0, 0);
-            GetComponent<SpriteRenderer>().flipX = data.XFlip;
-
-        }
-        else
-        {
-            transform.Translate(Time.deltaTime * -data.PatrolSpeed, 0, 0);
-            GetComponent<SpriteRenderer>().flipX = !data.XFlip;
-
-            ry = Physics2D.Raycast(castPointLeft.position, Vector2.left, data.RayDistance);
-            //Debug.DrawRay(castPointRight.position, Vector2.right * data.RayDistance, Color.green);
-
-           
-
-        }
-    }
-
 
     private void OnCollisionEnter2D(Collision2D collision)
-	{
-		//si la bola toca el enemigo que lo mate
-		if (collision.gameObject.tag == "Ball")
-		{
-
-            OnSoundPlayed(data.DeathSound);
-
-            OnDestroy();
-
-        }
-
-		//si las tramps tocan al enemigo los mata toca el enemigo que lo mate
-		if (collision.gameObject.layer == 13)
-		{
-            OnSoundPlayed(data.DeathSound);
-
-            OnDestroy();
-
-        }
-
-
-	}
-
-
-
-    //Para matar al enemigo ponemos un trigger ya que la fireball esta en este modo
-    private void OnTriggerEnter2D(Collider2D collision)
-	{
-		
-		if (collision.gameObject.tag == "fireball")
-		{
-            OnSoundPlayed(data.DeathSound);
-
-
-        }
-
-        if(collision.gameObject.tag == "fireshield")
-
+    {
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.layer == 13)
         {
-            OnSoundPlayed(data.DeathSound);
-          
-
-
-
+            enemyHP = 0;
         }
-
-
     }
 
-    public void OnSoundPlayed(AudioClip audioClip)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        SFX_Driver.Instance.PlaySound(audioClip);
+        if (collision.CompareTag("fireball"))
+        {
+            enemyHP = 0;
+        }
+    }
+
+    public void OnSoundPlayed(AudioClip clip)
+    {
+        SFX_Driver.Instance.PlaySound(clip);
+    }
+
+    private void OnDestroy()
+    {
+        SFX_Driver.Instance.RemoveObserver(this);
     }
 }

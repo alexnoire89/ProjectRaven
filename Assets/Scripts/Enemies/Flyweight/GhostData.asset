@@ -16,12 +16,12 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 894f272ebb11242af94879907071b1b6, type: 3}
   patrolTime: 2
   patrolSpeed: 5
-  rayDistance: 10
-  moveSpeed: 5
+  rayDistance: 5
+  moveSpeed: 10
   xFlip: 1
   enemy_Score: 200
   lifecoin: {fileID: 2701696136584896183, guid: 307f6bdbfc051914aa55759fe26d45e4, type: 3}
-  player: {fileID: 5007108029172986341, guid: 841ddac14bdccfb4f89b0371ec78aa6a, type: 3}
-  statePatrol: 0
-  stateChase: 1
+  player: {fileID: 8398738774996613295, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
+  statePatrol: 1
+  stateChase: 0
   stateIdle: 0

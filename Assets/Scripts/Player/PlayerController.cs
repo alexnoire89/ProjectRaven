@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour, IAudioObserver
 {
+    #region General Stats
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 14f;
     private float enemyMoveX = 40.0f;
@@ -37,8 +38,9 @@ public class PlayerController : MonoBehaviour, IAudioObserver
 
     //Interactables
     private IInteractable currentInteractable;
+    #endregion
 
-    
+    #region Mobile Movement
     //Touch input
     private Vector2 touchStartPos;
     private bool isTouching;
@@ -52,9 +54,10 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     //Joystick Touch
     [SerializeField] private FloatingJoystick joystick;
 
-
     //Movimiento tactil
     private float moveInputTouch = 0f;
+    #endregion
+
 
     void OnDestroy()
     {
@@ -84,7 +87,6 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         {
             HandleMovement();
             HandleTouchInput();
-            //HandleInteraction();
         }
     }
 
@@ -98,6 +100,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
 
         rb.velocity = new Vector2(moveInputTouch * moveSpeed, rb.velocity.y);
 
+        //Animaciones y Sprite
         if (moveInputTouch > 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
@@ -210,7 +213,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     {
         if (!RectTransformUtility.RectangleContainsScreenPoint(fireZone, tapPosition)) return;
 
-        //Tap Escudo
+        //Tap Disparo
         if (tapDuration < 0.3f)
         {
             if (Time.time - lastFireTime >= fireRate)
@@ -221,7 +224,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
             }
         }
 
-        //Tap Disparo
+        //Tap Escudo
         else
         {
             if (Time.time - lastSpecialShieldTime >= specialShieldRate)
@@ -234,13 +237,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     }
 
 
-    //void HandleInteraction()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
-    //    {
-    //        currentInteractable.Interact();
-    //    }
-    //}
+
 
 
 

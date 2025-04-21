@@ -13,7 +13,7 @@ public class FloatingJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private Vector2 startPosition;
 
 
-
+    //get para direccion del joystick en playerController
     public Vector2 InputDirection => inputVector;
 
 
@@ -32,8 +32,8 @@ public class FloatingJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 delta = eventData.position - startPosition;
-        Vector2 clamped = Vector2.ClampMagnitude(delta, handleRange);
+        Vector2 moveDistance = eventData.position - startPosition;
+        Vector2 clamped = Vector2.ClampMagnitude(moveDistance, handleRange);
         handle.anchoredPosition = clamped;
 
         inputVector = clamped / handleRange;

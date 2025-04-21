@@ -73,6 +73,6 @@ public class PlayerUIFacade : MonoBehaviour
 
     private void UpdateUI()
     {
-        scoreAndLifesText.text = "Score: " + points.ToString() + "\nLifes: " + lifes.ToString();
+        scoreAndLifesText.text = "Score: " + points.ToString() + "\nLives: " + lifes.ToString();
     }
 }
