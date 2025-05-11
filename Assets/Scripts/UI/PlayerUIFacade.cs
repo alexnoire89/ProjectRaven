@@ -75,4 +75,9 @@ public class PlayerUIFacade : MonoBehaviour
     {
         scoreAndLifesText.text = "Score: " + points.ToString() + "\nLives: " + lifes.ToString();
     }
+
+    public int GetCurrentScore()
+    {
+        return points;
+    }
 }

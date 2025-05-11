@@ -164,7 +164,9 @@ public class GameManager : MonoBehaviour, IAudioObserver {
 
     private void GameOver()
     {
-       
+
+        SavingData();
+
 
         if (lifes > 0)
         {
@@ -172,7 +174,6 @@ public class GameManager : MonoBehaviour, IAudioObserver {
             playerUIFacade.RemoveLifes(1);
             playerUIFacade.ResetPoints();
             playerUIFacade.InitLifeBar(HP);
-            //Debug.Log("Perdio una vida");
 
             playerObj.transform.position = new Vector3(positionXRespawn, positionYRespawn, 0);
             animator.SetTrigger("isStart");
@@ -181,7 +182,7 @@ public class GameManager : MonoBehaviour, IAudioObserver {
 
         else 
         {
-            //Debug.Log("gameover");
+
             playerUIFacade.ResetPoints();
             Destroy(player, 3f);
             
@@ -203,12 +204,26 @@ public class GameManager : MonoBehaviour, IAudioObserver {
 
     public void VictoryFinal()
     {
+        SavingData();
+
         animator.SetTrigger("isStart");
 
         SFX_Driver.Instance.StopSound();
         OnSoundPlayed(BGM_Victory);
 
         SceneManager.LoadScene("Victory");
+    }
+
+    private void SavingData()
+    {
+
+        //Se salva puntaje
+        int finalScore = playerUIFacade.GetCurrentScore();
+        SaveDataSystem.Instance.TrySaveHighScore(finalScore);
+
+        SaveDataSystem.Instance.UpdateSessionBestScore(playerUIFacade.GetCurrentScore());
+
+
     }
 
 

@@ -41,12 +41,14 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     #endregion
 
     #region Mobile Movement
+
+    [Header("TouchMovement")]
+    [SerializeField] private float swipeSensitivity = 2f;
+
     //Touch input
     private Vector2 touchStartPos;
     private bool isTouching;
     private float tapStartTime;
-    [Header("TouchMovement")]
-    [SerializeField] private float swipeSensitivity = 2f;
 
     //Touch Taps
     [SerializeField] RectTransform fireZone;
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
 
     //Movimiento tactil
     private float moveInputTouch = 0f;
+
     #endregion
 
 
@@ -94,9 +97,29 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
 
-        //Joystick
-        Vector2 joystickInput = joystick.InputDirection;
-        moveInputTouch = joystickInput.x;
+        // --- Teclado solo en editor o PC ---
+        if (Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            if (Input.GetKey(KeyCode.A))
+                moveInputTouch = -1f;
+            else if (Input.GetKey(KeyCode.D))
+                moveInputTouch = 1f;
+            else
+                moveInputTouch = 0f; // Importante: reset si no se toca nada
+        }
+        else
+        {
+            // --- Solo si estamos en móvil se toma el input del joystick
+            Vector2 joystickInput = joystick.InputDirection;
+            moveInputTouch = joystickInput.x;
+        }
+
+        ////Joystick
+        //Vector2 joystickInput = joystick.InputDirection;
+        //moveInputTouch = joystickInput.x;
+
+
+
 
         rb.velocity = new Vector2(moveInputTouch * moveSpeed, rb.velocity.y);
 
@@ -152,7 +175,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         }
 
         //PLACEHOLDER SOLO PARA SIMULACION DEL EDITOR DE UNITY
-        if ((Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer) && Input.GetMouseButton(0))
+        if ((Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer) )
         {
             Vector2 mousePos = Input.mousePosition;
 
@@ -181,6 +204,8 @@ public class PlayerController : MonoBehaviour, IAudioObserver
 
                 isTouching = false;
             }
+
+        
         }
     }
 
