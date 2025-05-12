@@ -74,8 +74,9 @@ public class GameManager : MonoBehaviour, IAudioObserver {
 
                 SFX_Driver.Instance.StopSound();
 
+                //Se resetea score para proxima partida
+                SaveDataSystem.Instance.ResetSessionScore();
 
-                
                 SceneManager.LoadScene("Game");
 
                 
@@ -207,10 +208,8 @@ public class GameManager : MonoBehaviour, IAudioObserver {
         SavingData();
 
         animator.SetTrigger("isStart");
-
         SFX_Driver.Instance.StopSound();
         OnSoundPlayed(BGM_Victory);
-
         SceneManager.LoadScene("Victory");
     }
 

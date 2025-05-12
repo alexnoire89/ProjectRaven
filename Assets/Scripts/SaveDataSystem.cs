@@ -14,6 +14,7 @@ public class SaveDataSystem : MonoBehaviour
 
     private const string HighScoreKey = "highscore";
     private int cloudHighScore = -1;
+
     private const string LastSaveTimeKey = "last_save_time";
 
     private int sessionBestScore = 0;
@@ -38,15 +39,27 @@ public class SaveDataSystem : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        ResetSessionScore();
-    }
+
 
     //funcion auxiliar para pasar el valor al get del score y que ya lo cargue
     private async Task LoadCloudHighScore()
     {
         cloudHighScore = await LoadHighScoreFromCloud();
+    }
+
+    public async Task<int> LoadHighScoreFromCloud()
+    {
+        var result = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { HighScoreKey });
+
+        if (result.TryGetValue(HighScoreKey, out var scoreValue))
+        {
+            if (int.TryParse(scoreValue, out int parsedScore))
+            {
+                return parsedScore;
+            }
+        }
+
+        return 0;
     }
 
     public async void TrySaveHighScore(int score)
@@ -96,20 +109,7 @@ public class SaveDataSystem : MonoBehaviour
         return PlayerPrefs.GetString(LastSaveTimeKey, "Saves Not Found");
     }
 
-    public async Task<int> LoadHighScoreFromCloud()
-    {
-        var result = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { HighScoreKey });
 
-        if (result.TryGetValue(HighScoreKey, out var scoreValue))
-        {
-            if (int.TryParse(scoreValue, out int parsedScore))
-            {
-                return parsedScore;
-            }
-        }
-
-        return 0;
-    }
 
 
 
