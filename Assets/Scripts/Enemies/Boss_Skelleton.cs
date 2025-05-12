@@ -107,6 +107,7 @@ public class Boss_Skelleton : Enemy, IAudioObserver
         lc.GetComponent<LifeCoin>().healValue = 2;
 
 
+
         if (bossHP <= 0)
         {
 

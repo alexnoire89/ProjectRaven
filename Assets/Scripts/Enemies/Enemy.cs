@@ -172,6 +172,8 @@ public class Enemy : MonoBehaviour, IAudioObserver
     public void TakeDamage(int damage)
     {
         enemyHP -= damage;
+        currentState = EnemyState.Chase;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -186,7 +188,9 @@ public class Enemy : MonoBehaviour, IAudioObserver
     {
         if (collision.CompareTag("fireball"))
         {
-            enemyHP = 0;
+            //enemyHP = 0;
+            OnSoundPlayed(data.DeathSound);
+
         }
     }
 

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5009791530845354705}
   - component: {fileID: 5009791530845354717}
   - component: {fileID: -3532749069125245968}
-  - component: {fileID: -4954059129803793606}
   - component: {fileID: 2774131944397080192}
   - component: {fileID: 9206175433860089196}
   - component: {fileID: 5253006330637357568}
@@ -33,8 +32,8 @@ Transform:
   m_GameObject: {fileID: 5009791530845354711}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.1149, y: 1.068, z: 0}
-  m_LocalScale: {x: 1.03936, y: 0.96856004, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.13, y: 1.0530257, z: 1.0872074}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -105,10 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerFire: 20
   fireTime: 2
-  enemyDeathSFX: {fileID: 8300000, guid: 894f272ebb11242af94879907071b1b6, type: 3}
-  doorHitSFX: {fileID: 8300000, guid: 7f79857b28c5749218674d1994791213, type: 3}
-  fragiledoor: {fileID: 0}
-  enemyBasic: {fileID: 0}
   firePrefab: {fileID: 5009791530845354711}
   damageFire: 50
 --- !u!50 &5009791530845354717
@@ -153,32 +148,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!61 &-4954059129803793606
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009791530845354711}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.34}
-  m_EdgeRadius: 0
 --- !u!58 &2774131944397080192
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -192,9 +161,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.014741247, y: -0.03954697}
+  m_Offset: {x: 0.009022772, y: -0.04319001}
   serializedVersion: 2
-  m_Radius: 0.3525877
+  m_Radius: 0.48159224
 --- !u!114 &9206175433860089196
 MonoBehaviour:
   m_ObjectHideFlags: 0

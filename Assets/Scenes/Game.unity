@@ -843,8 +843,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -1.1911497, y: -1.8920498, z: 0}
-    m_Extent: {x: 7.32255, y: 8.22985, z: 0}
+    m_Center: {x: -1.1881998, y: -1.9072497, z: 0}
+    m_Extent: {x: 7.3262997, y: 8.23075, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1079,7 +1079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5541732337611755397, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 156.64297
+      value: 127.02
       objectReference: {fileID: 0}
     - target: {fileID: 5541732337611755397, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1136,6 +1136,14 @@ PrefabInstance:
     - target: {fileID: 5541732337611755398, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
       propertyPath: m_Color.r
       value: 0.3301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541732337611755399, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
+      propertyPath: m_Size.y
+      value: 0.59920883
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541732337611755399, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.05414605
       objectReference: {fileID: 0}
     - target: {fileID: 5541732337611755399, guid: 49c4a4b9a4e134146899b4d0f7921fba, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -7877,8 +7885,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -4.11295, y: -1.9020998, z: 0}
-    m_Extent: {x: 10.23995, y: 8.227, z: 0}
+    m_Center: {x: -4.1124, y: -1.9004998, z: 0}
+    m_Extent: {x: 10.2379, y: 8.233299, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -113470,8 +113478,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.82145, y: -1.0781001, z: 0}
-    m_Extent: {x: 1.7781501, y: 1.9671, z: 0}
+    m_Center: {x: -0.8205, y: -1.0799501, z: 0}
+    m_Extent: {x: 1.7782, y: 1.95875, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -115468,8 +115476,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.04705, y: -0.07525, z: 0}
-    m_Extent: {x: 0.22915, y: 0.16575, z: 0}
+    m_Center: {x: -0.043749996, y: -0.07435, z: 0}
+    m_Extent: {x: 0.22525, y: 0.16955, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -116011,7 +116019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353683112}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -77.547226, y: 19.774124, z: -15}
+  m_LocalPosition: {x: -78.0208, y: 19.064102, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117041,8 +117049,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.56215, y: -1.9056501, z: 0}
-    m_Extent: {x: 10.07435, y: 8.22855, z: 0}
+    m_Center: {x: 1.5602498, y: -1.89465, z: 0}
+    m_Extent: {x: 10.06815, y: 8.22525, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -118798,8 +118806,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -1.1838999, y: -1.8993499, z: 0}
-    m_Extent: {x: 7.3252, y: 8.22845, z: 0}
+    m_Center: {x: -1.1997001, y: -1.89445, z: 0}
+    m_Extent: {x: 7.3231, y: 8.22985, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -120368,7 +120376,7 @@ MonoBehaviour:
   hitSFX: {fileID: 8300000, guid: 7f79857b28c5749218674d1994791213, type: 3}
   driverAttack: {fileID: 925062486}
   driverAttackLeft: {fileID: 1549806222}
-  attackRadio: 2
+  attackRadio: 3
   attackDamage: 30
 --- !u!4 &1966484091 stripped
 Transform:
@@ -121049,8 +121057,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -1.6155503, y: -2.6474497, z: 0}
-    m_Extent: {x: 6.8973503, y: 7.47865, z: 0}
+    m_Center: {x: -1.6164, y: -2.65085, z: 0}
+    m_Extent: {x: 6.9026003, y: 7.47645, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -124520,11 +124528,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8398738774996613295, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -81.3
+      value: -81.1
       objectReference: {fileID: 0}
     - target: {fileID: 8398738774996613295, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.31
+      value: 15.6
       objectReference: {fileID: 0}
     - target: {fileID: 8398738774996613295, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
       propertyPath: m_LocalPosition.z
@@ -124578,6 +124586,22 @@ PrefabInstance:
       propertyPath: shootingController
       value: 
       objectReference: {fileID: 995639985}
+    - target: {fileID: 8398738775338428415, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
+      propertyPath: m_Size.x
+      value: 0.8445587
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398738775338428415, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
+      propertyPath: m_Size.y
+      value: 1.0260519
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398738775338428415, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.03957876
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398738775338428415, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.04253642
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42d0a0e8a88cdae4ba0e35849ab5f328, type: 3}
 --- !u!4 &8584050697643544355 stripped

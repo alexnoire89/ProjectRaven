@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
 
-        // --- Teclado solo en editor o PC ---
+        //Teclado solo para editor 
         if (Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer)
         {
             if (Input.GetKey(KeyCode.A))
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         }
         else
         {
-            // --- Solo si estamos en móvil se toma el input del joystick
+            //Solo si estamos en celu se toma el input del joystick
             Vector2 joystickInput = joystick.InputDirection;
             moveInputTouch = joystickInput.x;
         }
@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour, IAudioObserver
         if (!RectTransformUtility.RectangleContainsScreenPoint(fireZone, tapPosition)) return;
 
         //Tap Disparo
-        if (tapDuration < 0.3f)
+        if (tapDuration < 0.2f)
         {
             if (Time.time - lastFireTime >= fireRate)
             {

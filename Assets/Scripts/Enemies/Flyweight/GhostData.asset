@@ -16,7 +16,7 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 894f272ebb11242af94879907071b1b6, type: 3}
   patrolTime: 2
   patrolSpeed: 5
-  rayDistance: 5
+  rayDistance: 8
   moveSpeed: 10
   xFlip: 1
   enemy_Score: 200

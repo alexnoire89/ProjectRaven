@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 1666
   deathSound: {fileID: 8300000, guid: acbcb75601b0082458fda8807f67c813, type: 3}
-  patrolTime: 5
-  patrolSpeed: 5
-  rayDistance: 10
-  moveSpeed: 10
+  patrolTime: 3
+  patrolSpeed: 12
+  rayDistance: 50
+  moveSpeed: 15
   xFlip: 0
   enemy_Score: 6666
   lifecoin: {fileID: 2701696136584896183, guid: 307f6bdbfc051914aa55759fe26d45e4, type: 3}
