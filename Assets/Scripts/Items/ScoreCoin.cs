@@ -9,8 +9,10 @@ public class ScoreCoin : MonoBehaviour, IAudioObserver
 	
 	[SerializeField] float patrolTime = 2.0f;
 	[SerializeField] float patrolSpeed = 5.0f;
+    [SerializeField] float lifeTime = 6.0f;
 
-	bool up = true;
+
+    bool up = true;
 	//Llama al script de los stats
 	public PlayerStats playerstats;
 	float currentTime;
@@ -48,8 +50,9 @@ public class ScoreCoin : MonoBehaviour, IAudioObserver
 	private void Update()
 	{
 		startPatrol();
+        Destroy(gameObject, lifeTime);
 
-	}
+    }
 
 
 

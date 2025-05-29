@@ -8,6 +8,8 @@ public class LifeCoin : MonoBehaviour, IAudioObserver
     [SerializeField] public int healValue = 10;
     [SerializeField] float patrolTime = 2.0f;
     [SerializeField] float patrolSpeed = 5.0f;
+    [SerializeField] float lifeTime = 6.0f;
+
     bool up = true;
     //Llama al script de los stats
     public PlayerStats playerstats;
@@ -39,14 +41,13 @@ public class LifeCoin : MonoBehaviour, IAudioObserver
         // extraemos el componente para usar luego
         playerstats = FindObjectOfType<PlayerStats>();
         SFX_Driver.Instance.RegisterObserver(this);
-    
-
 }
 
     private void Update()
     {
         startPatrol();
 
+        Destroy(gameObject, lifeTime);
     }
 
 

@@ -16,18 +16,45 @@ public class FloatingJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     //get para direccion del joystick en playerController
     public Vector2 InputDirection => inputVector;
 
-
+    void Start()
+    {
+        // Ocultar joystick al inicio
+        background.gameObject.SetActive(false);
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
 
+        Debug.Log("Presionooooooooooo");
 
-        //background.gameObject.SetActive(true);
-        //handle.gameObject.SetActive(true);
+
+        //startPosition = eventData.position;
+        //handle.anchoredPosition = Vector2.zero;
+
+
+        // Activamos el fondo del joystick
+        background.gameObject.SetActive(true);
+
+        // Mostrar y posicionar joystick donde se toca
         //background.position = eventData.position;
 
-        startPosition = eventData.position;
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            transform as RectTransform, // Este debe ser el panel padre del joystick
+            eventData.position,
+            eventData.pressEventCamera,
+            out localPoint
+        );
+
+        // Colocamos el joystick en esa posición
+        background.anchoredPosition = localPoint;
+
+
+        // Reiniciamos la palanca
         handle.anchoredPosition = Vector2.zero;
+
+        // Guardamos esa posición como referencia para el drag
+        startPosition = eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -41,9 +68,11 @@ public class FloatingJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        //background.gameObject.SetActive(false);
-        //handle.gameObject.SetActive(false);
+        //handle.anchoredPosition = Vector2.zero;
+        //inputVector = Vector2.zero;
 
+        // Ocultar y resetear
+        background.gameObject.SetActive(false);
         handle.anchoredPosition = Vector2.zero;
         inputVector = Vector2.zero;
     }

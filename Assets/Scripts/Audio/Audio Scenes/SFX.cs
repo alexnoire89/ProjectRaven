@@ -9,7 +9,7 @@ public class SFX : MonoBehaviour, IAudioObserver
 
     [SerializeField] private AudioClip BGM_Inicial;
 
-
+    private bool playOnce = false;
 
 
  
@@ -38,8 +38,13 @@ public class SFX : MonoBehaviour, IAudioObserver
     
     public void onClickStart()
     {
-        SFX_Driver.Instance.StopSound();
-        OnSoundPlayed(buttonStartSFX);
+        if(!playOnce)
+        {
+            SFX_Driver.Instance.StopSound();
+            OnSoundPlayed(buttonStartSFX);
+            playOnce = true;
+        }
+       
        
 
 

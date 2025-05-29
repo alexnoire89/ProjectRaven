@@ -62,6 +62,7 @@ public class SaveDataSystem : MonoBehaviour
         return 0;
     }
 
+    //Cifrar Score
     public async void TrySaveHighScore(int score)
     {
         int bestScore = Mathf.Max(score, cloudHighScore, GetLocalHighScore());
