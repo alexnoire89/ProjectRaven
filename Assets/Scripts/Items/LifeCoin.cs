@@ -32,7 +32,7 @@ public class LifeCoin : MonoBehaviour, IAudioObserver
 
     public void OnSoundPlayed(AudioClip audioClip)
     {
-        SFX_Driver.Instance.PlaySound(audioClip);
+        SFX_Driver.Instance.PlaySoundWithStop(audioClip);
     }
 
     // Start is called before the first frame update

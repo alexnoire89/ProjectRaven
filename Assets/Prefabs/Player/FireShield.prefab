@@ -307,5 +307,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shieldTime: 3
+  offsetDistance: 0
   fireShieldPrefab: {fileID: 5009791530845354711}
+  hitParticles: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
+  hitEnemyParticles: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
   damageFire: 10

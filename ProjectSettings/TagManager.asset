@@ -23,6 +23,7 @@ TagManager:
   - ScoreIcon
   - Door1
   - FinalGate
+  - Destructible
   layers:
   - Default
   - TransparentFX

@@ -16,6 +16,9 @@ public class PlayerStats : MonoBehaviour, IAudioObserver
     bool playerDestroyed = false;
     float currentTime;
 
+    [SerializeField] private GameObject destroyParticles;
+    [SerializeField] private GameObject hitParticles;
+
 
     //EVENTO
     public static event Action OnDeath;
@@ -58,7 +61,7 @@ public class PlayerStats : MonoBehaviour, IAudioObserver
         
                  currentTime += Time.deltaTime;
 
-                 if (currentTime > 5)
+                 if (currentTime > 2)
                     {
                       OnDeath?.Invoke();
 
@@ -136,6 +139,11 @@ public class PlayerStats : MonoBehaviour, IAudioObserver
 
         OnSoundPlayed(damageSFX);
 
+        if (hitParticles != null)
+        {
+            GameObject particles = Instantiate(hitParticles, transform.position, Quaternion.identity);
+            Destroy(particles, 1f); // evita dejar basura en el editor
+        }
 
         if (currentHP <= 0)
         {
@@ -151,7 +159,13 @@ public class PlayerStats : MonoBehaviour, IAudioObserver
             animator.SetTrigger("isDead");
 
             playerDestroyed = true;
-            
+
+            if (destroyParticles != null)
+            {
+                GameObject particles = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+                Destroy(particles, 2f); // evita dejar basura en el editor
+            }
+
         }
        
       

@@ -12,6 +12,8 @@ public class SaveDataSystem : MonoBehaviour
 {
     public static SaveDataSystem Instance;
 
+    private const string EncryptionKey = "ravenkey123";
+
     private const string HighScoreKey = "highscore";
     private int cloudHighScore = -1;
 
@@ -53,10 +55,7 @@ public class SaveDataSystem : MonoBehaviour
 
         if (result.TryGetValue(HighScoreKey, out var scoreValue))
         {
-            if (int.TryParse(scoreValue, out int parsedScore))
-            {
-                return parsedScore;
-            }
+            return DecryptScore(scoreValue);
         }
 
         return 0;
@@ -67,17 +66,15 @@ public class SaveDataSystem : MonoBehaviour
     {
         int bestScore = Mathf.Max(score, cloudHighScore, GetLocalHighScore());
 
-        //Guarda localmente
-        PlayerPrefs.SetInt(HighScoreKey, bestScore);
+        //Guarda localmente y cifra
+        PlayerPrefs.SetString(HighScoreKey, EncryptScore(bestScore));
         PlayerPrefs.SetString(LastSaveTimeKey, DateTime.UtcNow.ToString("o")); 
         PlayerPrefs.Save();
 
         //Guarda en la nube
-        //var data = new Dictionary<string, object> { { HighScoreKey, bestScore.ToString() } };
-        //await CloudSaveService.Instance.Data.ForceSaveAsync(data);
         var data = new Dictionary<string, object>
         {
-        { HighScoreKey, bestScore.ToString() },
+        { HighScoreKey, EncryptScore(bestScore) },
         { LastSaveTimeKey, DateTime.UtcNow.ToString("o") }
         };
 
@@ -102,7 +99,10 @@ public class SaveDataSystem : MonoBehaviour
     private int GetLocalHighScore()
     {
         //Si no lo encuentra devuelve 0
-        return PlayerPrefs.GetInt(HighScoreKey, 0);
+        string encrypted = PlayerPrefs.GetString(HighScoreKey, null);
+        if (!string.IsNullOrEmpty(encrypted))
+            return DecryptScore(encrypted);
+        return 0;
     }
 
     public string GetLastSaveTime()
@@ -130,5 +130,48 @@ public class SaveDataSystem : MonoBehaviour
     public int GetSessionBestScore()
     {
         return sessionBestScore;
+    }
+
+
+ 
+
+    private string EncryptScore(int score)
+    {
+        string raw = score.ToString();
+        char[] key = EncryptionKey.ToCharArray();
+        char[] input = raw.ToCharArray();
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            input[i] = (char)(input[i] ^ key[i % key.Length]);
+        }
+
+        return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(input));
+    }
+
+    private int DecryptScore(string encrypted)
+    {
+        try
+        {
+            byte[] data = Convert.FromBase64String(encrypted);
+            char[] input = System.Text.Encoding.UTF8.GetChars(data);
+            char[] key = EncryptionKey.ToCharArray();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                input[i] = (char)(input[i] ^ key[i % key.Length]);
+            }
+
+            if (int.TryParse(new string(input), out int score))
+            {
+                return score;
+            }
+        }
+        catch
+        {
+            Debug.LogWarning("Score decryption failed.");
+        }
+
+        return 0; 
     }
 }

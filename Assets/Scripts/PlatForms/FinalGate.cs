@@ -7,6 +7,7 @@ public class FinalGate : MonoBehaviour, IAudioObserver
     [SerializeField] public float upLimitDoor = 8;
     [SerializeField] public float speedDoor = 2;
     private float positionLimitY;
+    private float InitialPositionY;
 
     [SerializeField] private AudioClip doorSFX;
 
@@ -29,6 +30,7 @@ public class FinalGate : MonoBehaviour, IAudioObserver
 
     public void Start()
     {
+        InitialPositionY = transform.position.y;
         positionLimitY = transform.position.y + upLimitDoor;
         SFX_Driver.Instance.RegisterObserver(this);
     
@@ -49,6 +51,12 @@ public class FinalGate : MonoBehaviour, IAudioObserver
         }
     }
 
+    public void ResetDoor()
+    {
+        isOpened = false;
+        playOnce = true;
+        transform.position = new Vector3(transform.position.x, InitialPositionY, transform.position.z);
+    }
 
     public void CloseDoor()
     {

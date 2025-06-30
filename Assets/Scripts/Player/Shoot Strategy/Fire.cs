@@ -8,10 +8,12 @@ public class Fire : MonoBehaviour,IShootStrategy
 
     [SerializeField] float powerFire = 20f;
     [SerializeField] float fireTime = 2f;
+    [SerializeField] private GameObject hitParticles;
+    [SerializeField] private GameObject hitEnemyParticles;
 
-   
 
-  
+
+
     float currentTime;
 
     public GameObject firePrefab;
@@ -84,6 +86,13 @@ public class Fire : MonoBehaviour,IShootStrategy
         //Si las balas tocan el layer del piso se destruyen
         if (collision.gameObject.layer == 6)
         {
+
+            if (hitParticles != null)
+            {
+                GameObject particles = Instantiate(hitParticles, transform.position, Quaternion.identity);
+                Destroy(particles, 1.5f); // evita dejar basura en el editor
+            }
+
             Destroy(gameObject);
             
         }
@@ -97,6 +106,13 @@ public class Fire : MonoBehaviour,IShootStrategy
 
             if (enemyScript != null)
             {
+
+                if (hitEnemyParticles != null)
+                {
+                    GameObject particles = Instantiate(hitEnemyParticles, transform.position, Quaternion.identity);
+                    Destroy(particles, 1.5f); // evita dejar basura en el editor
+                }
+
                 enemyScript.TakeDamage(damageFire);
 
                 Destroy(gameObject);
@@ -110,7 +126,12 @@ public class Fire : MonoBehaviour,IShootStrategy
 
             if (fragileDoorScript != null)
             {
-              
+                if (hitParticles != null)
+                {
+                    GameObject particles = Instantiate(hitParticles, transform.position, Quaternion.identity);
+                    Destroy(particles, 1.5f); // evita dejar basura en el editor
+                }
+
                 fragileDoorScript.TakeDamage(damageFire);
                 Destroy(gameObject);
             }
@@ -123,6 +144,13 @@ public class Fire : MonoBehaviour,IShootStrategy
 
             if (bossScript != null)
             {
+
+                if (hitEnemyParticles != null)
+                {
+                    GameObject particles = Instantiate(hitEnemyParticles, transform.position, Quaternion.identity);
+                    Destroy(particles, 1.5f); // evita dejar basura en el editor
+                }
+
                 bossScript.GetDamaged(damageFire);
 
                 Destroy(gameObject);

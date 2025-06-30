@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour, IAudioObserver
     private EnemyState currentState = EnemyState.Patrol;
 
     private Vector3 playerPosition;
+    [SerializeField] private GameObject destroyParticles;
 
 
     public enum EnemyState
@@ -166,6 +167,14 @@ public class Enemy : MonoBehaviour, IAudioObserver
         Instantiate(data.Lifecoin, transform.position, Quaternion.identity);
         OnScoreChanged?.Invoke(data.Enemy_Score);
         OnSoundPlayed(data.DeathSound);
+
+        if (destroyParticles != null)
+        {
+            GameObject particles = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+            Destroy(particles, 2f); // evita dejar basura en el editor
+        }
+
+
         Destroy(gameObject);
     }
 

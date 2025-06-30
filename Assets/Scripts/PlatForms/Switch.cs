@@ -7,6 +7,7 @@ public class Switch : MonoBehaviour, IInteractable, IAudioObserver
     bool isClosed = false;
     bool isOpen = false;
     bool playOnce = true;
+    [SerializeField] private GameObject hitParticles;
 
     public Door door;
     [SerializeField] private AudioClip doorSFX;
@@ -35,6 +36,13 @@ public class Switch : MonoBehaviour, IInteractable, IAudioObserver
         {
             OnSoundPlayed(doorSFX);
             playOnce = false;
+
+            if (hitParticles != null)
+            {
+                GameObject particles = Instantiate(hitParticles, transform.position, Quaternion.identity);
+                Destroy(particles, 1.5f); // evita dejar basura en el editor
+            }
+
         }
     }
 

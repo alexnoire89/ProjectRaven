@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+
+
 
 public class SFX : MonoBehaviour, IAudioObserver
 {
+    [SerializeField] private Button startButton;
     [SerializeField] private AudioClip buttonStartSFX;
-    [SerializeField] private AudioClip buttonexitSFX;
+    //[SerializeField] private AudioClip buttonexitSFX;
 
     [SerializeField] private AudioClip BGM_Inicial;
 
@@ -30,7 +35,8 @@ public class SFX : MonoBehaviour, IAudioObserver
     {
        
         SFX_Driver.Instance.RegisterObserver(this);
-        SFX_Driver.Instance.PlaySound(BGM_Inicial);
+        //SFX_Driver.Instance.PlaySound(BGM_Inicial);
+        SFX_Driver.Instance.CrossfadeMusic(BGM_Inicial, 2f);
     }
 
 
@@ -40,22 +46,27 @@ public class SFX : MonoBehaviour, IAudioObserver
     {
         if(!playOnce)
         {
-            SFX_Driver.Instance.StopSound();
+            //SFX_Driver.Instance.StopSound();
             OnSoundPlayed(buttonStartSFX);
             playOnce = true;
+
+            startButton.interactable = false;
+            //Time.timeScale = 0f;
+
+
         }
-       
-       
+
+
 
 
 
     }
 
-    public void onClickExit()
-    {
-        SFX_Driver.Instance.StopSound();
-        OnSoundPlayed(buttonexitSFX);
+    //public void onClickExit()
+    //{
+    //    SFX_Driver.Instance.StopSound();
+    //    OnSoundPlayed(buttonexitSFX);
        
-    }
+    //}
 
 }

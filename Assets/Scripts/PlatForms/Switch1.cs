@@ -12,6 +12,9 @@ public class Switch1 : MonoBehaviour, IInteractable, IAudioObserver
     [SerializeField] private AudioClip doorSFX;
     private Animator animator;
 
+    [SerializeField] private GameObject hitParticles;
+
+
     void OnDestroy()
     {
         SFX_Driver.Instance.RemoveObserver(this);
@@ -35,6 +38,12 @@ public class Switch1 : MonoBehaviour, IInteractable, IAudioObserver
         {
             OnSoundPlayed(doorSFX);
             playOnce = false;
+
+            if (hitParticles != null)
+            {
+                GameObject particles = Instantiate(hitParticles, transform.position, Quaternion.identity);
+                Destroy(particles, 1.5f); // evita dejar basura en el editor
+            }
         }
     }
 
@@ -46,6 +55,8 @@ public class Switch1 : MonoBehaviour, IInteractable, IAudioObserver
             animator.SetTrigger("isActivated");
             isOpen = true;
             door.OpenDoor();
+
+        
         }
     }
 

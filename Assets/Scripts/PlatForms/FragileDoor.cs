@@ -10,10 +10,11 @@ public class FragileDoor : MonoBehaviour, IAudioObserver
     private Animator animator;
 
     [SerializeField] private AudioClip doorHitSFX;
+    [SerializeField] private GameObject destroyParticles;
 
 
 
-  
+
 
     void OnDestroy()
     {
@@ -45,6 +46,12 @@ public class FragileDoor : MonoBehaviour, IAudioObserver
         
         if (doorHP <= 0)
         {
+            if (destroyParticles != null)
+            {
+                GameObject particles = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+                Destroy(particles, 2f); 
+            }
+
             Destroy(gameObject);
         }
 

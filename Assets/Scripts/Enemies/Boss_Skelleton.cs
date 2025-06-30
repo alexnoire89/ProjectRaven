@@ -54,14 +54,14 @@ public class Boss_Skelleton : Enemy, IAudioObserver
 
             deathTime += Time.deltaTime;
 
-            if (deathTime > 10)
+            if (deathTime > 5)
             {
 
+                OnVictory?.Invoke();
 
 
                 Destroy(gameObject);
 
-                OnVictory?.Invoke();
             }
 
         }

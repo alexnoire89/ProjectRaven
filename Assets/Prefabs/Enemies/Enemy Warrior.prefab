@@ -150,6 +150,8 @@ MonoBehaviour:
   castPointLeft: {fileID: 0}
   castPointRight: {fileID: 0}
   data: {fileID: 11400000, guid: 05607e2a71436d7498e519a62a4d1382, type: 2}
+  isIdleOnly: 0
+  destroyParticles: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
 --- !u!50 &8741759478384366046
 Rigidbody2D:
   serializedVersion: 4

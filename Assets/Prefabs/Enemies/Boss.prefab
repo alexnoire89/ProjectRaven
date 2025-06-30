@@ -201,20 +201,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc28524aa845fda468fb0e1b6b66869a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolTime: 2
-  patrolSpeed: 3
-  moveSpeed: 5
-  xFlip: 0
-  rayDistance: 10
-  player: {fileID: 7714013451704759220, guid: 8392525e671c3b4429f68720f5c434d0, type: 3}
   castPointLeft: {fileID: 4350803794417328982}
   castPointRight: {fileID: 4350803794693469467}
+  data: {fileID: 0}
+  isIdleOnly: 0
+  destroyParticles: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
   bossHP: 1000
-  boss_Score: 666
   bossDeathSFX: {fileID: 0}
   hitSFX: {fileID: 0}
-  rb: {fileID: 4350803794599935256}
-  lifecoin: {fileID: 2701696136584896183, guid: 307f6bdbfc051914aa55759fe26d45e4, type: 3}
   driverAttack: {fileID: 0}
   driverAttackLeft: {fileID: 0}
   attackRadio: 0

@@ -159,18 +159,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26bf1d43242a03449ae6d57ded0caf30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolTime: 2
-  patrolSpeed: 5
-  moveSpeed: 5
-  xFlip: 1
-  rayDistance: 10
-  player: {fileID: 7714013451704759220, guid: 8392525e671c3b4429f68720f5c434d0, type: 3}
   castPointLeft: {fileID: 2414143246469986209}
   castPointRight: {fileID: 1893456107124774738}
-  enemy_Score: 200
-  enemyDeathSFX: {fileID: 8300000, guid: 894f272ebb11242af94879907071b1b6, type: 3}
-  rb: {fileID: 5541732337611755396}
-  lifecoin: {fileID: 2701696136584896183, guid: 307f6bdbfc051914aa55759fe26d45e4, type: 3}
+  data: {fileID: 0}
+  isIdleOnly: 0
+  destroyParticles: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
 --- !u!50 &5541732337611755396
 Rigidbody2D:
   serializedVersion: 4

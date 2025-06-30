@@ -5,21 +5,30 @@ using UnityEngine;
 
 public class Door1 : MonoBehaviour
 {
-    [SerializeField] public float downLimitDoor = 8;
-    [SerializeField] public float speedDoor = 2;
-    private float positionLimitY;
+    [SerializeField] private float moveDistance = 8f;
+    [SerializeField] private float speedDoor = 2f;
+    [SerializeField] private bool moveInX = false; // Por defecto se mueve en Y
+
     private bool isOpening = false;
+    private Vector3 targetPosition;
 
     void Start()
     {
-        positionLimitY = transform.position.y - downLimitDoor;
+        if (moveInX)
+        {
+            targetPosition = transform.position - new Vector3(moveDistance, 0, 0);
+        }
+        else
+        {
+            targetPosition = transform.position - new Vector3(0, moveDistance, 0);
+        }
     }
 
     void Update()
     {
-        if (isOpening && transform.position.y > positionLimitY)
+        if (isOpening)
         {
-            transform.Translate(0, Time.deltaTime * -speedDoor, 0);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speedDoor * Time.deltaTime);
         }
     }
 
@@ -28,4 +37,5 @@ public class Door1 : MonoBehaviour
         isOpening = true;
     }
 }
+
 

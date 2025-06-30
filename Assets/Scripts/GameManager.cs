@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour, IAudioObserver {
     [SerializeField] GameObject player;
 
     [SerializeField] private AudioClip BGM_Menu;
+    [SerializeField] private AudioClip BGM_Game;
     [SerializeField] private AudioClip BGM_GameOver;
     [SerializeField] private AudioClip BGM_Victory;
 
@@ -60,6 +62,10 @@ public class GameManager : MonoBehaviour, IAudioObserver {
         player = GetComponent<GameObject>();
         SFX_Driver.Instance.RegisterObserver(this);
         currentHP = HP;
+
+        //Resetear Tuto
+        PlayerPrefs.SetInt("TutorialDone", 0);
+        PlayerPrefs.Save();
     }
 
 
@@ -69,22 +75,46 @@ public class GameManager : MonoBehaviour, IAudioObserver {
         {
             currentTime += Time.deltaTime;
 
+
+
+            //if (currentTime > 4)
+            //{
+
+            //    //SFX_Driver.Instance.StopSound();
+            //    SFX_Driver.Instance.CrossfadeMusic(BGM_Game, 2f);
+
+            //    //Se resetea score para proxima partida
+            //    SaveDataSystem.Instance.ResetSessionScore();
+
+
+            //    SceneManager.LoadScene("Game");
+
+            //    startPressed = false;
+
+            //}
+
             if (currentTime > 4)
             {
+                SFX_Driver.Instance.CrossfadeMusic(BGM_Game, 2f);
 
-                SFX_Driver.Instance.StopSound();
+                bool tutorialCompleted = PlayerPrefs.GetInt("TutorialDone", 0) == 1;
 
-                //Se resetea score para proxima partida
-                SaveDataSystem.Instance.ResetSessionScore();
+                if (tutorialCompleted)
+                {
+                    SaveDataSystem.Instance.ResetSessionScore();
+                    SceneManager.LoadScene("Game");
+                }
+                else
+                {
+                    SceneManager.LoadScene("TrainingRoom");
+                }
 
-                SceneManager.LoadScene("Game");
-
-                
-
+                startPressed = false;
             }
+
         }
 
-      
+
     }
 
 
@@ -142,8 +172,11 @@ public class GameManager : MonoBehaviour, IAudioObserver {
 
         animator.SetTrigger("isStart");
 
-        SFX_Driver.Instance.StopSound();
-        OnSoundPlayed(BGM_Menu);
+        //SFX_Driver.Instance.StopSound();
+        //OnSoundPlayed(BGM_Menu);
+
+        SFX_Driver.Instance.CrossfadeMusic(BGM_Menu, 1f);
+
 
         SceneManager.LoadScene("Menu");
         
@@ -179,20 +212,27 @@ public class GameManager : MonoBehaviour, IAudioObserver {
             playerObj.transform.position = new Vector3(positionXRespawn, positionYRespawn, 0);
             animator.SetTrigger("isStart");
 
+            //Reseteamos el porton
+            FinalGate finalGate = FindObjectOfType<FinalGate>();
+            if (finalGate != null)
+            {
+                finalGate.ResetDoor();
+            }
         }
 
         else 
         {
 
             playerUIFacade.ResetPoints();
-            Destroy(player, 3f);
+            Destroy(player, 1f);
             
 
             animator.SetTrigger("isStart");
 
-            SFX_Driver.Instance.StopSound();
-            OnSoundPlayed(BGM_GameOver);
-
+            //SFX_Driver.Instance.StopSound();
+            //OnSoundPlayed(BGM_GameOver);
+            SFX_Driver.Instance.CrossfadeMusic(BGM_GameOver, 1f);
+            
 
 
 
@@ -208,8 +248,11 @@ public class GameManager : MonoBehaviour, IAudioObserver {
         SavingData();
 
         animator.SetTrigger("isStart");
-        SFX_Driver.Instance.StopSound();
-        OnSoundPlayed(BGM_Victory);
+        //SFX_Driver.Instance.StopSound();
+        //OnSoundPlayed(BGM_Victory);
+
+        SFX_Driver.Instance.CrossfadeMusic(BGM_Victory, 1f);
+
         SceneManager.LoadScene("Victory");
     }
 
